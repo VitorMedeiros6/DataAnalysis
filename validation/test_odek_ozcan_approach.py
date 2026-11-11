@@ -23,7 +23,7 @@ sys.path.insert(0, str(TEST_DIR))
 sys.path.insert(0, str(ROOT))
 
 from test_segmentation import segmentar_movimentos
-from sensor_placement import PLACEMENT_FILES
+from participants import PLACEMENT_FILES
 
 PROTOCOL = json.load(open(ROOT / "data" / "tempos_protocolo.json", encoding="utf-8"))
 SENSOR_DATA = ROOT / "data" / "sensor_data"

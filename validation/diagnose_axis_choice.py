@@ -5,7 +5,7 @@ cycle counts closer to the expected 10, for Ex_MS_Bracos (arm swing,
 parallel to the water line) and Ex_MI_Pernas (leg kick, perpendicular to
 the water line).
 
-For each correctly-matched sensor/exercise pair (via data/sensor_placement.json), reports
+For each correctly-matched sensor/exercise pair (via data/participants.json), reports
 the RAW (non-abs) peak count on x, y, z individually, so we can see if one
 axis consistently tracks closest to 10 across patients for each exercise.
 """
@@ -22,7 +22,7 @@ sys.path.insert(0, str(TEST_DIR))
 sys.path.insert(0, str(ROOT))
 
 from scipy.signal import find_peaks, butter, filtfilt
-from sensor_placement import PLACEMENT_FILES
+from participants import PLACEMENT_FILES
 
 PROTOCOL = json.load(open(ROOT / "data" / "tempos_protocolo.json", encoding="utf-8"))
 SENSOR_DATA = ROOT / "data" / "sensor_data"

@@ -27,7 +27,7 @@ Outputs:
 import numpy as np
 import pandas as pd
 
-from sensor_placement import PLACEMENT
+from participants import PLACEMENT
 
 # (exercise, limb_type, column label) — used to build the per-cycle long table.
 EXERCISE_LIMB_GROUPS = [

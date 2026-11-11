@@ -19,12 +19,12 @@ import pandas as pd
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
-# Sensor placement: data/sensor_placement.json, read by sensor_placement.py.
+# Sensor placement: data/participants.json, read by participants.py.
 # Keys = patient folder name, values = sensor ID per limb position
 # ULR = Upper Limb Right, ULL = Upper Limb Left
 # LLR = Lower Limb Right, LLL = Lower Limb Left
 # ---------------------------------------------------------------------------
-from sensor_placement import PLACEMENT
+from participants import PLACEMENT
 
 # Exercise → which limb pair(s) to compare. Ex_MS_Bracos/Ex_MI_Pernas only
 # have sensor data for one limb pair; the swim exercises record all 4 limbs

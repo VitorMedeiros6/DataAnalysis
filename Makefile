@@ -3,11 +3,11 @@
 #   make              everything: extract -> tables -> results
 #   make extract      step 1: read the .cwa recordings and extract features (slow)
 #   make tables       step 2: compile the extracted features into CSV tables
-#   make results      step 3: statistics, clustering, classifiers and notebooks
+#   make results      step 3: dataset checks, statistics, clustering, classifiers and notebooks
 #   make validation   Chapter 4 cycle-detection checks (not part of `make`)
 #   make clean        delete every generated file (data/ is never touched)
 #
-# Before the first run, write data/sensor_placement.json and data/tempos_protocolo.json by hand
+# Before the first run, write data/participants.json and data/tempos_protocolo.json by hand
 # (README, sections 3 and 4).
 #
 # Use another interpreter:            make PYTHON=python3
@@ -44,9 +44,11 @@ tables:
 	$(PYTHON) build_full_exercise_features.py
 
 results:
-	@echo ===== Step 3/3: statistics, clustering and classifiers
+	@echo ===== Step 3/3: dataset checks, statistics, clustering and classifiers
+	$(PYTHON) dataset_checks.py
 	$(RUN_NOTEBOOK) formulas_e_contas.ipynb
 	$(RUN_NOTEBOOK) analise_pd_vs_controlo.ipynb
+	$(PYTHON) evolution_trajectory.py
 	$(PYTHON) small_window_analysis.py
 	$(PYTHON) analysis_granularity.py
 	$(PYTHON) full_window_analysis.py
@@ -57,8 +59,10 @@ results:
 
 validation:
 	$(PYTHON) validation/test_segmentation.py
+	$(PYTHON) validation/cycle_validation.py
 	$(PYTHON) validation/test_odek_ozcan_approach.py
 	$(PYTHON) validation/test_odek_ozcan_5patients_all_ex.py
+	$(PYTHON) validation/development_mae.py
 	$(PYTHON) validation/diagnose_axis_choice.py
 
 clean:

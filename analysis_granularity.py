@@ -10,20 +10,12 @@ aggregated over the whole exercise) instead of the per-cycle granularity
 Mirrors the exact patient/sensor/limb lookup logic of build_isolated_summary.py
 so the two granularities are directly comparable panel-for-panel.
 """
-import json
 import pandas as pd
 from scipy import stats
 
-from sensor_placement import PLACEMENT
+# Groups and exclusions (Control 2, a duplicate of Control 1) come from data/participants.json
+from participants import ANON, GROUP_MAP, PLACEMENT
 from build_isolated_summary import EXERCISE_LIMB_GROUPS
-
-with open("participants.json", encoding="utf-8") as f:
-    ANON = {pid: pid for pid in json.load(f)}
-
-# Control 2 is a byte-for-byte duplicate of Control 1
-# under a second name in tempos_protocolo.json; excluded here for the same reason it is
-# excluded from every other PD-vs-Control comparison in this thesis (pseudo-replication).
-EXCLUDED_DUPLICATE = "Control 2"
 
 df = pd.read_csv("summary_small.csv")
 df.columns = [c.lstrip("﻿") for c in df.columns]
@@ -31,15 +23,15 @@ df["sensor_id"] = df["sensor"].astype(str).str.split("_").str[0]
 
 rows = []
 for patient, pgroup in df.groupby("patient"):
-    if patient == EXCLUDED_DUPLICATE:
-        continue
     placement = PLACEMENT.get(patient)
     if placement is None:
         continue
     anon = ANON.get(patient)
     if anon is None:
         continue
-    group = "PD" if anon.startswith("Patient") else "Control"
+    group = GROUP_MAP.get(anon)
+    if group is None:
+        continue  # excluded in data/participants.json
 
     for exercise, limb_type, label in EXERCISE_LIMB_GROUPS:
         egroup = pgroup[pgroup["exercise"] == exercise]

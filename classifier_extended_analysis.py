@@ -1,4 +1,3 @@
-import json
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -8,16 +7,7 @@ from sklearn.model_selection import LeaveOneOut, cross_val_predict
 from sklearn.metrics import (accuracy_score, roc_auc_score, precision_score,
                               recall_score, f1_score)
 
-with open("participants.json", encoding="utf-8") as f:
-    ANON = {pid: pid for pid in json.load(f)}
-
-PD_ALL = ['Patient 1','Patient 2','Patient 3','Patient 4','Patient 5','Patient 6','Patient 7',
-          'Patient 9','Patient 10','Patient 12','Patient 14','Patient 15','Patient 16',
-          'Patient 17','Patient 18','Patient 19','Patient 20','Patient 21','Patient 22']
-CONTROL_ALL = ['Control 1','Control 3','Control 4','Control 5','Control 6','Control 7',
-               'Control 8','Control 9','Control 10','Control 11']
-GROUP_MAP = {p: 'PD' for p in PD_ALL}
-GROUP_MAP.update({p: 'Control' for p in CONTROL_ALL})
+from participants import ANON, GROUP_MAP
 
 cbl = pd.read_csv("cycles_by_limb.csv")
 cbl["patient"] = cbl["patient"].map(ANON).fillna(cbl["patient"])

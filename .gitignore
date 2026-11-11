@@ -1,8 +1,8 @@
-# Participant data is never committed: recordings, the hand-written placement and protocol
+# Participant data is never committed: recordings, the hand-written participant and protocol
 # files, and anything derived from them
 data/sensor_data/
 data/tempos_protocolo.json
-data/sensor_placement.json
+data/participants.json
 validation/test_protocol.json
 *.cwa
 

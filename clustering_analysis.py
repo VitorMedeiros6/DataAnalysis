@@ -2,8 +2,11 @@
 K-means clustering (k = 2) of the participants' mean cycle features, compared with the
 PD/Control labels (Chapter 6, Section 6.2). Prints the adjusted Rand index (ARI), the silhouette
 score and the variance explained by the first two principal components.
+
+Output:
+  clustering_pca.csv   one row per participant: group, K-means cluster and the first two principal
+                       components (the values behind the clustering figure, which is not drawn)
 """
-import json
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -11,16 +14,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import adjusted_rand_score, silhouette_score
 
-with open("participants.json", encoding="utf-8") as f:
-    ANON = {pid: pid for pid in json.load(f)}
-
-PD_ALL = ['Patient 1','Patient 2','Patient 3','Patient 4','Patient 5','Patient 6','Patient 7',
-          'Patient 9','Patient 10','Patient 12','Patient 14','Patient 15','Patient 16',
-          'Patient 17','Patient 18','Patient 19','Patient 20','Patient 21','Patient 22']
-CONTROL_ALL = ['Control 1','Control 3','Control 4','Control 5','Control 6','Control 7',
-               'Control 8','Control 9','Control 10','Control 11']
-GROUP_MAP = {p: 'PD' for p in PD_ALL}
-GROUP_MAP.update({p: 'Control' for p in CONTROL_ALL})
+from participants import ANON, GROUP_MAP
 
 cbl = pd.read_csv("cycles_by_limb.csv")
 cbl["patient"] = cbl["patient"].map(ANON).fillna(cbl["patient"])
@@ -43,3 +37,8 @@ var_explained = pca.explained_variance_ratio_.sum() * 100
 print(f"N patients = {len(patient_features)} "
       f"({(patient_features['group'] == 'PD').sum()} PD, {(patient_features['group'] == 'Control').sum()} Control)")
 print(f"ARI = {ari:.3f}  silhouette = {sil:.3f}  variance explained (2 PCs) = {var_explained:.0f}%")
+
+pca_table = pd.DataFrame({"patient": patient_features["patient"], "group": patient_features["group"],
+                          "cluster": cluster_labels, "PC1": X_pca[:, 0], "PC2": X_pca[:, 1]})
+pca_table.to_csv("clustering_pca.csv", index=False)
+print("Saved: clustering_pca.csv")

@@ -13,12 +13,12 @@ import tsfel
 
 GRAVITY_MS2 = 9.80665  # skdh.io.ReadCwa returns acceleration in g units, not m/s^2
 
-# Sensor placement: data/sensor_placement.json, read by sensor_placement.py.
+# Sensor placement: data/participants.json, read by participants.py.
 # Used only to pick the fixed detection axis (see FIXED_AXIS_BY_LIMB below) for
 # swim exercises, where every sensor is processed but only limb-matched ones
 # are used downstream. Ex_MS_Bracos/Ex_MI_Pernas don't need this — the
 # exercise name alone already implies the limb.
-from sensor_placement import PLACEMENT
+from participants import PLACEMENT
 
 # Ödek & Özcan (2023) — validated against video ground truth for swimming
 # arm-stroke/kick detection: a single fixed axis per limb, low-pass filtered,
